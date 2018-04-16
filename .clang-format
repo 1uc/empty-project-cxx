@@ -1,0 +1,8 @@
+BasedOnStyle: LLVM
+
+AlwaysBreakTemplateDeclarations : true
+BinPackArguments : false
+BinPackParameters : false
+BreakBeforeBinaryOperators : All
+
+ConstructorInitializerAllOnOneLineOrOnePerLine : true
