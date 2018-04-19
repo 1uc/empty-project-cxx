@@ -7,7 +7,8 @@ HunterGate(
     SHA1 "b49c4b58e17c1473e822f8b21fcde92fee25791d"
 )
 
-project(zisa)
+project(zisa CXX)
+include("cmake/DebugWithSanitizers.cmake")
 
 # -- Dependencies --------------------------------------------------------------
 add_library(third_party INTERFACE)
