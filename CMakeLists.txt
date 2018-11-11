@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 3.0)
 
 include("cmake/HunterGate.cmake")
+include("cmake/FastDebug.cmake")
+include("cmake/ASAN.cmake")
 
 HunterGate(
-    URL "https://github.com/ruslo/hunter/archive/v0.20.39.tar.gz"
-    SHA1 "b49c4b58e17c1473e822f8b21fcde92fee25791d"
+    URL "https://github.com/ruslo/hunter/archive/v0.22.14.tar.gz"
+    SHA1 "f194eab02248f7d8792f7fc0158f6194d005bf86"
 )
 
-project(zisa CXX)
-include("cmake/DebugWithSanitizers.cmake")
+project(PROJECT_NAME)
 
 # -- Dependencies --------------------------------------------------------------
 add_library(third_party INTERFACE)
@@ -20,6 +21,23 @@ target_link_libraries(third_party INTERFACE Boost::program_options)
 hunter_add_package(nlohmann_json)
 find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(third_party INTERFACE nlohmann_json)
+
+# -- Flags ---------------------------------------------------------------------
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG(-Wall COMPILER_SUPPORTS_WALL)
+CHECK_CXX_COMPILER_FLAG(-Wextra COMPILER_SUPPORTS_WEXTRA)
+CHECK_CXX_COMPILER_FLAG(-Wconversion COMPILER_SUPPORTS_WCONVERSION)
+
+add_library(warning_flags INTERFACE)
+if(COMPILER_SUPPORTS_WALL)
+  target_compile_options(warning_flags INTERFACE -Wall)
+endif()
+if(COMPILER_SUPPORTS_WEXTRA)
+  target_compile_options(warning_flags INTERFACE -Wextra)
+endif()
+if(COMPILER_SUPPORTS_WCONVERSION)
+  target_compile_options(warning_flags INTERFACE -Wconversion)
+endif()
 
 # -- Tests ---------------------------------------------------------------------
 hunter_add_package(Catch)
@@ -34,3 +52,4 @@ add_test(NAME UnitTests COMMAND unit_tests)
 
 # -- Subdirectories ------------------------------------------------------------
 add_subdirectory(test)
+# add_subdirectory(src)
