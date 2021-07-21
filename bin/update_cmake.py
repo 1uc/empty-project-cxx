@@ -71,9 +71,9 @@ if __name__ == "__main__":
 
     base_directory = "src/"
     for d in find_subdirectories(base_directory):
-        recurse(d, "zisa")
+        recurse(d, "lmmr")
         append_to_file(cmake_file, add_subdirectory(base_directory + d))
 
-    add_executable(cmake_file, "run", "zisa.cpp")
+    add_executable(cmake_file, "lmmr", "lmmr.cpp")
 
     recurse("test/", "unit_tests")
